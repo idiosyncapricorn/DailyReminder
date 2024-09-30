@@ -1,0 +1,122 @@
+import UIKit
+
+class SolarDataView: UIView {
+    private let label: UILabel = {
+        let label = UILabel()
+        label.translatesAutoresizingMaskIntoConstraints = false
+        label.textAlignment = .center
+        label.numberOfLines = 0
+        return label
+    }()
+    
+    override init(frame: CGRect) {
+        super.init(frame: frame)
+        setupView()
+    }
+    
+    required init?(coder: NSCoder) {
+        super.init(coder: coder)
+        setupView()
+    }
+    
+    private func setupView() {
+        addSubview(label)
+        NSLayoutConstraint.activate([
+            label.topAnchor.constraint(equalTo: topAnchor),
+            label.leadingAnchor.constraint(equalTo: leadingAnchor),
+            label.trailingAnchor.constraint(equalTo: trailingAnchor),
+            label.bottomAnchor.constraint(equalTo: bottomAnchor)
+        ])
+    }
+    
+    func update(with data: String) {
+        DispatchQueue.main.async {
+            self.label.text = data
+        }
+    }
+}
+
+class ViewController: UIViewController {
+    @IBOutlet weak var abit: UILabel!
+    @IBOutlet weak var zquare: UIView!
+    @IBOutlet weak var ztreak: UILabel!
+    @IBOutlet weak var Click: UIButton!
+    
+    var timestamps: [String] = []
+    var solarDataView: SolarDataView!
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        initializeSolarDataView()
+        loadTimestamps()
+        fetchSolarData()
+    }
+    
+    private func initializeSolarDataView() {
+        solarDataView = SolarDataView()
+        solarDataView.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(solarDataView)
+        NSLayoutConstraint.activate([
+            solarDataView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            solarDataView.topAnchor.constraint(equalTo: zquare.bottomAnchor, constant: 20),
+            solarDataView.widthAnchor.constraint(equalTo: view.widthAnchor, multiplier: 0.8),
+            solarDataView.heightAnchor.constraint(equalToConstant: 100)
+        ])
+        
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(solarDataViewTapped))
+        solarDataView.addGestureRecognizer(tapGesture)
+        solarDataView.isUserInteractionEnabled = true
+    }
+    
+    @objc private func solarDataViewTapped() {
+        print("Solar Data View Tapped")
+    }
+    
+    private func loadTimestamps() {
+        timestamps = getTimestamps()
+        if let latestTimestamp = timestamps.last {
+            ztreak.text = "Last timestamp: \(latestTimestamp)"
+        }
+    }
+    
+    @IBAction func re(_ sender: Any) {
+        let currentDateTime = Date()
+        let formatter = DateFormatter()
+        formatter.timeStyle = .medium
+        formatter.dateStyle = .medium
+        let dateTimeString = formatter.string(from: currentDateTime)
+        ztreak.text = dateTimeString
+        print("Timestamp: \(dateTimeString)")
+        
+    }
+    
+   
+    
+    func getTimestamps() -> [String] {
+        return UserDefaults.standard.array(forKey: "timestamps") as? [String] ?? []
+    }
+    
+    func fetchSolarData() {
+        let apiKey = "0PBHNcdTbb-6fL56XyE18jDdwhRuLYVQ"
+        let urlString = "https://api.solcast.com.au/world_radiation/estimated_actuals?latitude=37.779940571360896&longitude=-122.42167948438983&hours=168&api_key=\(apiKey)"
+        guard let url = URL(string: urlString) else { return }
+        
+        let task = URLSession.shared.dataTask(with: url) { data, response, error in
+            if let error = error {
+                print("Error fetching data: \(error)")
+                return
+            }
+            guard let data = data else { return }
+            do {
+                if let jsonResponse = try JSONSerialization.jsonObject(with: data, options: []) as? [String: Any] {
+                    let displayData = jsonResponse.description
+                    self.solarDataView.update(with: displayData)
+                }
+            } catch {
+                print("Error decoding JSON: \(error)")
+            }
+        }
+        task.resume()
+    }
+}
+
