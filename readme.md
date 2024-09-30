@@ -1,25 +1,26 @@
-# Speech-to-Text Module
+# Leave On Time - iPhone App
 
 ## Overview
 
-The **Speech-to-Text Module** is a simple yet effective tool designed to convert spoken words into written text. It provides an easy-to-use interface that allows users to dictate text instead of typing, making it a helpful tool for faster input or accessibility.
+The **Leave On Time** app is designed to help users build better consistency with their daily routines by sending timely reminders to leave the house. It encourages accountability through notifications and clock-ins, helping users stay on track with their schedule.
 
 ## Key Features
 
-- **Real-Time Transcription**: Converts speech into text instantly, allowing for a seamless dictation experience.
+- **Daily Notifications**: The app sends a notification at a pre-specified time to remind the user when it's time to leave the house.
   
-- **Easy Integration**: Can be integrated into other applications to enhance functionality with voice recognition capabilities.
+- **Clock-In System**: Once the user leaves, they can "clock in" via the app to confirm they've departed on time.
 
-- **High Accuracy**: Delivers precise transcriptions with minimal errors, depending on the quality of the input audio.
+- **Tracking Consistency**: The app maintains a log of each clock-in, allowing users to track their consistency over time. This can serve as motivation to improve punctuality.
 
 ## How It Works
 
-1. **Activate Module**: The user enables the speech-to-text feature within the application.
-2. **Speak**: The user speaks directly into their device.
-3. **Instant Transcription**: The module captures the speech and displays the transcribed text in real-time.
+1. **Set a Time**: The user sets a time when they'd like to be reminded to leave.
+2. **Receive Notifications**: At the specified time, the app sends a notification reminding the user to head out.
+3. **Clock In**: The user taps the notification, opens the app, and clocks in to confirm they are on schedule.
+4. **View History**: Users can review a list of their clock-in times to track how often they've left on time.
 
 ## Benefits
 
-- Speeds up text entry by eliminating the need to type.
-- Provides a more accessible option for users with limited mobility or those who prefer dictation.
-- Can be used in various contexts, such as note-taking, messaging, or command input.
+- Helps users stick to daily routines.
+- Encourages punctuality and time management.
+- Simple and intuitive to use.
